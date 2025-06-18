@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: transform
+    description: "Dataset des trajets en taxi jaune de New York au cours de l'année 2024."
+    columns:
+      - name: tpep_pickup_datetime
+        description: "The date and time when the meter was engaged"
+        tests:
+          - not_null
+
+      - name: tpep_dropoff_datetime
+        description: "The date and time when the meter was disengaged."
+        tests:
+          - not_null
+
+      - name: trip_duration_minutes
+        description: "The duration of the trop in minutes."
+        tests: 
+          - not_null
+
+      - name: trip_distance
+        description: "The  trip distance in miles"
+        tests:
+          - not_null
+
+      - name: passenger_count
+        description: "The number of passe,gers in the vehicule."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_name: passenger_count
+              column_type: BIGINT
+          
+      - name: payment_method
+        description: "Translated payment method."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["Credit card", "Cash"]
+
+      - name: store_and_fwd_flag
+        description: "Indicates whether the trip record was stored in vehicule memory before sending to the."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["N"]
