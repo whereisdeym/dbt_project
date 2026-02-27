@@ -37,7 +37,9 @@ transformed_data AS (
 
         DATE_DIFF('minute', tpep_pickup_datetime, tpep_dropoff_datetime) AS trip_duration_minutes,
 
-        * EXCLUDE (passenger_count, payment_type)
+        * EXCLUDE (passenger_count, payment_type),
+        
+        ROUND(tip_amount / NULLIF(total_amount, 0)*100, 2) AS tip_percentage
     FROM filtered_data
 
 ),
@@ -55,3 +57,5 @@ final_data AS (
 SELECT * EXCLUDE (pickup_date, dropoff_date) 
 FROM final_data
 WHERE trip_duration_minutes > 0
+-- Ajout du filtre de sécurité sur la vitesse (Distance / (Minutes/60))
+  AND (trip_distance / (NULLIF(trip_duration_minutes, 0) / 60.0)) <= 100

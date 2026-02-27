@@ -1,3 +1,3 @@
 SELECT *
 FROM {{ ref('transform') }}
-WHERE trip_distance <= 0
+WHERE trip_duration_minutes <= 0
