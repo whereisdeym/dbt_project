@@ -4,7 +4,7 @@
 
 {{  config(
     materialized='external',
-    location='output/trips_2024_transformed.parquet',
+    location='C:/Users/Dell/Desktop/dbt/dbt_project/output/trips_2024_transformed.parquet',
     format='parquet'
 ) }}
 
